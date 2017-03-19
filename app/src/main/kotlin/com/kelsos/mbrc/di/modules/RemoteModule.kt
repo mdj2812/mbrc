@@ -4,6 +4,7 @@ import android.support.v4.app.NotificationManagerCompat
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.kelsos.mbrc.di.providers.NotificationManagerCompatProvider
+import com.kelsos.mbrc.di.providers.RealmProvider
 import com.kelsos.mbrc.events.bus.RxBus
 import com.kelsos.mbrc.events.bus.RxBusImpl
 import com.kelsos.mbrc.repository.AlbumRepository
@@ -51,6 +52,7 @@ import com.kelsos.mbrc.utilities.SettingsManagerImpl
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import io.realm.Realm
 import toothpick.config.Module
 
 class RemoteModule : Module() {
@@ -91,5 +93,6 @@ class RemoteModule : Module() {
     bind(RemoteRadioDataSource::class.java).to(RemoteRadioDataSourceImpl::class.java).singletonInScope()
     bind(RadioRepository::class.java).to(RadioRepositoryImpl::class.java).singletonInScope()
     bind(RadioService::class.java).to(RadioServiceImpl::class.java).singletonInScope()
+    bind(Realm::class.java).toProvider(RealmProvider::class.java).providesSingletonInScope()
   }
 }

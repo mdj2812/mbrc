@@ -16,23 +16,23 @@ import com.raizlabs.android.dbflow.sql.language.SQLite
 import com.raizlabs.android.dbflow.structure.database.transaction.FastStoreModelTransaction
 import io.reactivex.Observable
 import io.reactivex.Single
+import io.realm.OrderedRealmCollection
+import io.realm.Realm
 import javax.inject.Inject
 
 class LocalArtistDataSourceImpl
-@Inject constructor() : LocalArtistDataSource {
+@Inject constructor(private val realm: Realm) : LocalArtistDataSource {
 
   override fun deleteAll() {
-    delete(Artist::class).execute()
+    realm.beginTransaction()
+    realm.delete(Artist::class.java)
+    realm.commitTransaction()
   }
 
   override fun saveAll(list: List<Artist>) {
-    val adapter = modelAdapter<Artist>()
-
-    val transaction = FastStoreModelTransaction.insertBuilder(adapter)
-        .addAll(list)
-        .build()
-
-    database<Artist>().executeTransaction(transaction)
+    realm.beginTransaction()
+    realm.copyToRealm(list)
+    realm.commitTransaction()
   }
 
   override fun loadAllCursor(): Observable<FlowCursorList<Artist>> {
@@ -44,7 +44,8 @@ class LocalArtistDataSourceImpl
     }
   }
 
-  override fun getArtistByGenre(genre: String): Single<FlowCursorList<Artist>> {
+  override fun getArtistByGenre(genre: String): Single<OrderedRealmCollection<Artist>> {
+
     return Single.create {
       val modelQueriable = SQLite.select().distinct()
           .from<Artist>(Artist::class.java)

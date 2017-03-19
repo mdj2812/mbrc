@@ -3,6 +3,7 @@ import java.text.SimpleDateFormat
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'kotlin-android'
+apply plugin: 'realm-android'
 apply plugin: 'idea'
 apply plugin: 'jacoco'
 apply plugin: 'com.github.kt3k.coveralls'
@@ -153,7 +154,6 @@ idea {
 
 ext {
   support_library_version = "25.3.0"
-  dbflow_version = "4.0.0-beta5"
   toothpick_version = "1.0.5"
   jackson_version = "2.8.7"
   butterknife_version = "8.5.1"
@@ -206,12 +206,6 @@ dependencies {
 
   //Some of the dependencies pull the wrong version support v13
   compile "com.android.support:support-v13:${support_library_version}"
-
-  kapt "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
-
-  compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
-  compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
-  compile "com.github.Raizlabs.DBFlow:dbflow-kotlinextensions:${dbflow_version}@aar"
 
   compile "com.fasterxml.jackson.core:jackson-core:${jackson_version}"
   compile "com.fasterxml.jackson.core:jackson-databind:${jackson_version}"
